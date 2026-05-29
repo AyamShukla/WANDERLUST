@@ -1,0 +1,55 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6">
+
+        <h4 class="fw-bold mb-1">Create your account</h4>
+        <p class="text-muted mb-4">Join Wanderlust to list or explore stays.</p>
+
+        <% if (error && error.length) { %>
+            <div class="alert alert-danger rounded-3"><%= error %></div>
+        <% } %>
+
+        <form method="POST" action="/signup" novalidate class="needs-validation">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Username</label>
+                <input name="username" type="text" class="form-control rounded-3" required placeholder="Choose a username">
+                <div class="invalid-feedback">Please enter a username.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                <input name="email" type="email" class="form-control rounded-3" required placeholder="you@email.com">
+                <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Password</label>
+                <input name="password" type="password" class="form-control rounded-3" required placeholder="Min. 6 characters">
+                <div class="invalid-feedback">Please enter a password.</div>
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-danger rounded-pill fw-semibold">Sign Up</button>
+            </div>
+
+            <p class="text-center text-muted small">
+                Already have an account? <a href="/login" class="text-danger">Log in</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    (() => {
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

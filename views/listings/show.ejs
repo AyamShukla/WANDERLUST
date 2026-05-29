@@ -1,0 +1,144 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <a href="/listings" class="text-muted small text-decoration-none d-inline-flex align-items-center gap-1 mb-3">
+            <i class="bi bi-arrow-left"></i> Back to listings
+        </a>
+
+        <h3 class="fw-bold mb-1"><%= listing.title %></h3>
+        <p class="text-muted mb-3">
+            <i class="bi bi-geo-alt-fill me-1 text-danger"></i><%= listing.location %>, <%= listing.country %>
+        </p>
+
+        <div class="rounded-4 overflow-hidden mb-4" style="max-height: 420px;">
+            <img
+                src="<%= listing.image.url %>"
+                class="w-100"
+                style="height: 420px; object-fit: cover;"
+                alt="<%= listing.title %>"
+                onerror="this.src='https://plus.unsplash.com/premium_photo-1779271607674-0288347a1b2e?q=80&w=800&auto=format&fit=crop'"
+            >
+        </div>
+
+        <div class="card border rounded-4 p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <p class="text-muted small mb-2">
+                        <i class="bi bi-person-circle me-1"></i>
+                        Listed by <strong><%= listing.owner ? listing.owner.username : "someone" %></strong>
+                    </p>
+                    <h5 class="fw-semibold mb-1">About this place</h5>
+                    <p class="text-muted mb-0"><%= listing.description %></p>
+                </div>
+                <div class="text-end ms-4 flex-shrink-0">
+                    <span class="fs-4 fw-bold">&#8377;<%= listing.price.toLocaleString("en-IN") %></span>
+                    <span class="text-muted d-block small">per night</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Owner actions -->
+        <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+        <div class="d-flex gap-2 mb-5">
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark rounded-pill px-4">
+                <i class="bi bi-pencil me-1"></i> Edit
+            </a>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                <button class="btn btn-danger rounded-pill px-4">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </form>
+        </div>
+        <% } %>
+
+        <hr>
+
+        <!-- Leave a review -->
+        <% if (currUser) { %>
+        <div class="mb-5">
+            <h5 class="fw-bold mb-3">Leave a Review</h5>
+            <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
+
+                <!-- Star rating -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Rating</label>
+                    <div class="d-flex gap-2">
+                        <% for(let i = 1; i <= 5; i++) { %>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review[rating]" value="<%= i %>" id="star<%= i %>" required>
+                            <label class="form-check-label" for="star<%= i %>"><%= i %> ★</label>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Comment -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Comment</label>
+                    <textarea name="review[comment]" class="form-control rounded-3" rows="3" placeholder="Share your experience..." required></textarea>
+                    <div class="invalid-feedback">Please write a comment.</div>
+                </div>
+
+                <button type="submit" class="btn btn-danger rounded-pill px-4">
+                    <i class="bi bi-send me-1"></i> Submit Review
+                </button>
+            </form>
+        </div>
+        <% } else { %>
+        <p class="text-muted mb-5">
+            <a href="/login" class="text-danger">Log in</a> to leave a review.
+        </p>
+        <% } %>
+
+        <!-- All reviews -->
+        <% if (listing.reviews.length > 0) { %>
+        <h5 class="fw-bold mb-3">
+            <%= listing.reviews.length %> Review<%= listing.reviews.length > 1 ? 's' : '' %>
+        </h5>
+        <div class="d-flex flex-column gap-3 mb-4">
+            <% for(let review of listing.reviews) { %>
+            <div class="card border rounded-4 p-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="fw-semibold mb-1">
+                            <i class="bi bi-person-circle me-1 text-muted"></i>
+                            <%= review.author ? review.author.username : "Anonymous" %>
+                        </p>
+                        <p class="text-warning mb-1">
+                            <% for(let i = 1; i <= 5; i++) { %>
+                                <%= i <= review.rating ? '★' : '☆' %>
+                            <% } %>
+                            <span class="text-muted small ms-1"><%= review.rating %>/5</span>
+                        </p>
+                        <p class="mb-0 text-muted"><%= review.comment %></p>
+                    </div>
+                    <!-- Only review author can delete their review -->
+                    <% if (currUser && review.author && currUser._id.equals(review.author._id)) { %>
+                    <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                        <button class="btn btn-sm btn-outline-danger rounded-pill">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+
+    </div>
+</div>
+
+<script>
+    (() => {
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

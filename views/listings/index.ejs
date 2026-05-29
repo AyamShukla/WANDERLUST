@@ -1,0 +1,50 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .listing-img-wrapper {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .listing-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .listing-card-link:hover img {
+    transform: scale(1.04);
+  }
+  .listing-card-link {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
+
+<h4 class="mb-4 fw-semibold">All Listings</h4>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+    <% for(let listing of allListings) { %>
+    <div class="col">
+        <a href="/listings/<%= listing._id %>" class="listing-card-link">
+            <div class="listing-img-wrapper">
+                <img
+                    src="<%= listing.image.url %>"
+                    alt="<%= listing.title %>"
+                    onerror="this.src='https://plus.unsplash.com/premium_photo-1779271607674-0288347a1b2e?q=80&w=800&auto=format&fit=crop'"
+                >
+            </div>
+            <div class="mt-2">
+                <h6 class="fw-semibold mb-0"><%= listing.title %></h6>
+                <p class="text-muted small mb-0"><%= listing.location %>, <%= listing.country %></p>
+                <p class="small mb-0 mt-1">
+                    <span class="fw-semibold">&#8377;<%= listing.price.toLocaleString("en-IN") %></span>
+                    <span class="text-muted">/ night</span>
+                </p>
+            </div>
+        </a>
+    </div>
+    <% } %>
+</div>

@@ -1,0 +1,51 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6">
+
+        <h4 class="fw-bold mb-1">Welcome back</h4>
+        <p class="text-muted mb-4">Log in to your Wanderlust account.</p>
+
+        <% if (error && error.length) { %>
+            <div class="alert alert-danger rounded-3"><%= error %></div>
+        <% } %>
+
+        <% if (success && success.length) { %>
+            <div class="alert alert-success rounded-3"><%= success %></div>
+        <% } %>
+
+        <form method="POST" action="/login" novalidate class="needs-validation">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Username</label>
+                <input name="username" type="text" class="form-control rounded-3" required placeholder="Your username">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Password</label>
+                <input name="password" type="password" class="form-control rounded-3" required placeholder="Your password">
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-danger rounded-pill fw-semibold">Log In</button>
+            </div>
+
+            <p class="text-center text-muted small">
+                New to Wanderlust? <a href="/signup" class="text-danger">Sign up</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    (() => {
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

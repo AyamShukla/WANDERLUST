@@ -1,0 +1,69 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+
+        <h4 class="fw-bold mb-1">Edit listing</h4>
+        <p class="text-muted mb-4">Update the details of your place.</p>
+
+        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" enctype="multipart/form-data" novalidate class="needs-validation">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Title</label>
+                <input name="listing[title]" type="text" class="form-control rounded-3" value="<%= listing.title %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Description</label>
+                <textarea name="listing[description]" class="form-control rounded-3" rows="3"><%= listing.description %></textarea>
+            </div>
+
+            <!-- Show current image + option to replace -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Current Image</label><br>
+                <img src="<%= listing.image.url %>" class="rounded-3 mb-2" style="height:160px; object-fit:cover; width:100%;">
+                <label class="form-label fw-semibold mt-2">Replace Image</label>
+                <input name="image" type="file" class="form-control rounded-3" accept="image/*">
+                <div class="form-text">Leave blank to keep the current image.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Price per night (&#8377;)</label>
+                <div class="input-group">
+                    <span class="input-group-text">&#8377;</span>
+                    <input name="listing[price]" type="number" class="form-control rounded-end-3" value="<%= listing.price %>" min="0" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Location</label>
+                <input name="listing[location]" type="text" class="form-control rounded-3" value="<%= listing.location %>" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Country</label>
+                <input name="listing[country]" type="text" class="form-control rounded-3" value="<%= listing.country %>" required>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold">
+                    <i class="bi bi-check-lg me-1"></i> Save Changes
+                </button>
+                <a href="/listings/<%= listing._id %>" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    (() => {
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
