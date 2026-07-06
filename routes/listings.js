@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { storage, cloudinary } = require('../cloudConfig.js');
+const { storage, cloudinary } = require('../cloudconfig.js');
 const upload = multer({ storage });
 
 const Listing = require('../models/listing.js');
