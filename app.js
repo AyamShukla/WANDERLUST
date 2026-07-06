@@ -19,14 +19,21 @@ const reviewRouter  = require('./routes/reviews.js');
 const userRouter    = require('./routes/users.js');
  
 const MONGO_URL = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
- 
-main()
-    .then(() => console.log("Connected to DB"))
-    .catch(err => console.log(err));
- 
-async function main() {
-    await mongoose.connect(MONGO_URL);
+
+async function connectDB() {
+    if (mongoose.connection.readyState >= 1) return;
+    return mongoose.connect(MONGO_URL);
 }
+
+// Ensure database is connected before handling any request (critical for serverless environments)
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
  
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
