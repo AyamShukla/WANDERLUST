@@ -4,7 +4,7 @@ const multer = require('multer');
 const { storage, cloudinary } = require('../cloudConfig.js');
 const upload = multer({ storage });
 
-const Listing = require('../MODELS/listing.js');
+const Listing = require('../models/listing.js');
 const ExpressError = require('../utils/ExpressError.js');
 const { validateListing } = require('../schema.js');
 

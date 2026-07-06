@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams gives access to :id from listings
 
 const Review = require('../models/review.js');
-const Listing = require('../MODELS/listing.js');
+const Listing = require('../models/listing.js');
 const { validateReview } = require('../schema.js');
 
 const wrapAsync = (fn) => (req, res, next) => fn(req, res, next).catch(next);
