@@ -1,0 +1,70 @@
+/* ===== WANDERLUST - Airbnb-style CSS ===== */
+
+body {
+    background-color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    color: #222;
+}
+
+/* ----- NAVBAR ----- */
+.navbar-brand span {
+    color: #FF385C;
+    letter-spacing: -0.5px;
+}
+
+/* ----- LISTING CARDS ----- */
+.listing-card {
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.listing-card-link:hover .listing-card {
+    transform: translateY(-3px);
+}
+
+.listing-img-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    height: 220px;        /* fixed height — images can't break this */
+}
+
+.listing-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* crop to fill, never stretch */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.listing-card-link:hover .listing-img {
+    transform: scale(1.04);
+}
+
+/* ----- SHOW PAGE ----- */
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* ----- FORMS ----- */
+.form-control:focus,
+.form-select:focus {
+    border-color: #FF385C;
+    box-shadow: 0 0 0 0.2rem rgba(255, 56, 92, 0.15);
+}
+
+/* ----- BUTTONS ----- */
+.btn-danger {
+    background-color: #FF385C;
+    border-color: #FF385C;
+}
+
+.btn-danger:hover {
+    background-color: #e0314f;
+    border-color: #e0314f;
+}
+
+/* ----- FOOTER ----- */
+footer {
+    font-size: 0.85rem;
+}
