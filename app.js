@@ -25,15 +25,6 @@ async function connectDB() {
     return mongoose.connect(MONGO_URL);
 }
 
-// Ensure database is connected before handling any request (critical for serverless environments)
-app.use(async (req, res, next) => {
-    try {
-        await connectDB();
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
  
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -68,6 +59,16 @@ app.use((req, res, next) => {
     res.locals.error    = req.flash("error");
     res.locals.currUser = req.user;
     next();
+});
+
+// Ensure database is connected before handling any request (critical for serverless environments)
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
  
 // ── Routes ────────────────────────────────────────────────────────────────────
