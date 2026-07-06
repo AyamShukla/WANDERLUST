@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: wanderlust-airbnb
+    env: node
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: ATLASDB_URL
+        sync: false # Render will prompt you for this value during deployment
+      - key: CLOUD_NAME
+        value: dhvbmspbq
+      - key: CLOUD_API_KEY
+        value: 295894577866172
+      - key: CLOUD_API_SECRET
+        value: 2uIphdoQK7O4eJ7vctY5on_4RZo
